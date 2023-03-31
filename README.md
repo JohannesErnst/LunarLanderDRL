@@ -1,7 +1,8 @@
 # Lunar Lander Deep Reinforcement Learning
 Train a deep reinforcement learning model to solve the Open AI Lunar Lander problem.
 
-![lander](https://user-images.githubusercontent.com/51992212/227261936-51fb5cc0-9047-4fd2-b057-2c95b8f79f02.png)
+![crashgit](https://user-images.githubusercontent.com/51992212/229205576-242e8912-2b61-4fef-939c-0a6e5375a2a9.gif)
+![landgit](https://user-images.githubusercontent.com/51992212/229205587-7c00a0a8-0842-4d78-90f5-b59bed0c97f0.gif)
 
 ## Environment
 OpenAI Gym library [Lunar Lander](https://www.gymlibrary.dev/environments/box2d/lunar_lander/). <br>
