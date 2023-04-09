@@ -62,6 +62,7 @@ class CustomModel:
         model = Sequential()
         model.add(Dense(512, input_dim=self.num_observations, activation='relu'))
         model.add(Dense(256, activation='relu'))
+        # model.add(Dense(128, activation='relu'))
         model.add(Dense(self.num_actions, activation='linear'))
         model.compile(loss='mean_squared_error', optimizer=Adam(lr=0.001))
         print(model.summary())
@@ -92,7 +93,7 @@ class CustomModel:
         next_states = np.squeeze(np.array([i[3] for i in random_sample]))
         done_list = np.array([i[4] for i in random_sample])
 
-        # Apply ϵ-greedy policy
+        # Determine loss with Bellman optimality equation
         targets = rewards + self.gamma * (np.amax(self.model.predict_on_batch(next_states), axis=1)) * (1 - done_list)
         target_vec = self.model.predict_on_batch(states)
         indexes = np.array([i for i in range(self.batch_size)])
@@ -112,6 +113,8 @@ class CustomModel:
 
             # Loop over maximum number of steps
             for step in range(num_steps):
+
+                # Get action according to ϵ-greedy policy
                 received_action = self.get_action(state)
                 next_state, reward, done, _, _ = env.step(received_action)
                 next_state = np.reshape(next_state, [1, self.num_observations])
@@ -126,7 +129,7 @@ class CustomModel:
                 state = next_state
                 self.update_counter()
 
-                # Learn weights according to experience replay and ϵ-greedy policy
+                # Learn weights according to experience replay and Bellman optimality equation
                 self.learn_weights()
 
                 if done:
@@ -289,11 +292,11 @@ if __name__ == '__main__':
     if render:
         env = gym.make("LunarLander-v2", render_mode = "human",
                        continuous = False, gravity = -10, 
-                       enable_wind = False, wind_power = 15, turbulence_power = 1.5)
+                       enable_wind = False, wind_power = 10, turbulence_power = 1.0)
     else:
         env = gym.make("LunarLander-v2",
                        continuous = False, gravity = -10, 
-                       enable_wind = False, wind_power = 15, turbulence_power = 1.5)
+                       enable_wind = False, wind_power = 10, turbulence_power = 1.0)
 
     # Create model
     if model_type == 'DQNAgent':
